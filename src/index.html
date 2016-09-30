@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Marco Amodio 2016 -->
+<head>
+    <meta charset="UTF-8">
+    <title>Rubrica/Contatti Attori</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- font ricavato da goolge font -->
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
+    <!-- font ricavato da goolge font -->
+</head>
+<body>
+    <div id='content'></div>
+
+    <script type="text/babel">
+
+        var CONTACTS = [
+            {
+                id: 1,
+                name: 'Totò',
+                phoneNumber: '+250966436661',
+                image: 'https://66.media.tumblr.com/59fd577b593bf36508a4949ff1fabbea/tumblr_n3v0wcdKah1t2pbgvo1_r1_400.gif'
+            }, {
+                id: 2,
+                name: 'Vittorio De Sica',
+                phoneNumber: '+250966344466',
+                image: 'http://67.media.tumblr.com/04230783d6297fce056b2429ea69e660/tumblr_ni4pl9w6h81t2pbgvo1_400.gif'
+            }, {
+                id: 3,
+                name: 'Marcello Mastroianni',
+                phoneNumber: '+25096344433',
+                image: 'https://67.media.tumblr.com/a64b0f10d9c44af97f7f8fe96f6d71e3/tumblr_nwo8rgjysE1rfd7lko1_400.gif'
+            }, {
+                id: 4,
+                name: 'Peppino De Filippo',
+                phoneNumber: '+250456784935',
+                image: 'http://67.media.tumblr.com/8bf1cb41dba0b48091264d9dc60ff138/tumblr_n4g8lsOTKL1t2pbgvo1_400.gif'
+            }
+        ];
+
+        var Contact = React.createClass({
+            render: function() {
+                return (
+                    <li className="contact">
+                        <img className="contact-image" src={this.props.image} width="70px" height="70px" />
+                        <div className="contact-info">
+                            <div className="contact-name"> {this.props.name} </div>
+                            <div className="contact-number"> {this.props.phoneNumber} </div>
+                        </div>
+                    </li>
+                );
+            }
+        });
+
+
+        var ContactsList = React.createClass({
+            getInitialState: function() {
+                return {
+                    displayedContacts: CONTACTS
+                };
+            },
+
+            handleSearch: function(event) {
+                var searchQuery = event.target.value.toLowerCase();
+                var displayedContacts = CONTACTS.filter(function(el) {
+                    var searchValue = el.name.toLowerCase();
+                    return searchValue.indexOf(searchQuery) !== -1;
+                });
+
+                this.setState({
+                    displayedContacts: displayedContacts
+                });
+            },
+
+            render: function() {
+                return (
+                    <div className="contacts">
+                       <div className="contacts-title">Contatti Attori</div>
+                        <ul className="contacts-list">
+                            {
+                               this.state.displayedContacts.map(function(el) {
+                                    return <Contact
+                                        key={el.id}
+                                        name={el.name}
+                                        phoneNumber={el.phoneNumber}
+                                        image={el.image}
+                                    />;
+                               })
+                            }
+                        </ul>
+                        <input type="text" className="search-field" placeholder="Cerca il tuo attore preferito.." onChange={this.handleSearch} />
+                    </div>
+                );
+            }
+        });
+
+        ReactDOM.render(
+            <ContactsList />,
+            document.getElementById("content")
+        );
+
+    </script>
+</body>
+</html>
